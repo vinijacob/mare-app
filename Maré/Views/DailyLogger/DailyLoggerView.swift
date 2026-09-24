@@ -38,16 +38,7 @@ struct DailyLoggerView: View {
                     hasSelectedMood = true
                 }
             }
-
-            Button {
-                // Register Mood
-            } label: {
-                Text(hasSelectedMood ? "Register Mood" : " ")
-            }
-            .buttonStyle(.glassProminent)
-            .tint(.purple)
-            .opacity(hasSelectedMood ? 1 : 0)
-
+            
             VStack(spacing: 5) {
                 ZStack(alignment: .topLeading) {
                     if comment.isEmpty {
@@ -72,6 +63,16 @@ struct DailyLoggerView: View {
                     .foregroundStyle(.foreground)
                     .italic()
             }
+            
+            Button {
+                // Register Mood
+            } label: {
+                Text(hasSelectedMood ? "Register Mood" : " ")
+            }
+            .buttonStyle(.glassProminent)
+            .tint(.purple)
+            .opacity(hasSelectedMood ? 1 : 0)
+
         }
     }
 }
