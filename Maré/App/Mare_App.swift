@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct Mare_App: App {
@@ -13,5 +14,6 @@ struct Mare_App: App {
         WindowGroup {
             RootView()
         }
+        .modelContainer(for: MoodRegister.self)
     }
 }
