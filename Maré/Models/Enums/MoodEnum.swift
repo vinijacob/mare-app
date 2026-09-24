@@ -7,10 +7,20 @@
 
 import Foundation
 
-enum Mood: String, CaseIterable, Codable {
-    case grumpy = "Grumpy"
-    case happy = "Happy"
-    case sad = "Sad"
-    case nostalgic = "Nostalgic"
-    case bucolic = "Bucolic"
+enum MoodEnum: String, CaseIterable, Codable, Identifiable {
+    var id: Self {self}
+    
+    case grumpy = "Grumpy 😠"
+    case happy = "Happy 😊"
+    case sad = "Sad 😞"
+    case nostalgic = "Nostalgic 🥹"
+    case inLove = "In Love 😍"
+    case exhausted = "Exhausted 🫩"
+    case sleepy = "Sleepy 😴"
+    case sick = "Sick 🤒"
+    case crazy = "Crazy 😛"
+    case furious = "Furious 😤"
+    case melting = "Melting 🫠"
+    case likeShit = "Like Shit 💩"
+    case saint = "Saint 😇"
 }
