@@ -70,7 +70,7 @@ struct DailyLoggerView: View {
                 Text(hasSelectedMood ? "Register Mood" : " ")
             }
             .buttonStyle(.glassProminent)
-            .tint(.purple)
+            .tint(selectedMood.color)
             .opacity(hasSelectedMood ? 1 : 0)
 
         }
