@@ -1,5 +1,5 @@
 //
-//  DailyLoggerView.swift
+//  sourcecode.swift
 //  Maré
 //
 //  Created by Vinicius Ramos Jacob on 23/09/26.
@@ -13,13 +13,23 @@ struct DailyLoggerView: View {
     @State private var hasSelectedMood = false
     @State private var comment: String = ""
     @State private var isModalOpened: Bool = false
-    
+
+    @Environment(\.modelContext) private var context
+
+    @Query private var registers: [MoodRegister]
+
+    private var hasRegisteredToday: Bool {
+        registers.contains { register in
+            Calendar.current.isDateInToday(register.date)
+        }
+    }
+
     let moods: [MoodEnum] = MoodEnum.allCases
-    
+
     var body: some View {
         ZStack {
             if !isModalOpened {
-                Button("How are you feeling today?") {
+                Button(hasRegisteredToday ? "Make Another Entry" : "How are you feeling today?") {
                     withAnimation(.bouncy) {
                         isModalOpened = true
                     }
@@ -29,7 +39,7 @@ struct DailyLoggerView: View {
                 .transition(.scale.combined(with: .opacity))
             } else {
                 VStack(spacing: 25) {
-                    Text("How are you feeling today?")
+                    Text(hasRegisteredToday ? "Having a Mood Swing?" : "How are you feeling today?")
                         .font(.largeTitle.bold())
 
                     Text("Pick a mood")
@@ -80,7 +90,7 @@ struct DailyLoggerView: View {
                         }
 
                         Button {
-                            // Register Mood
+                            logMood()
                         } label: {
                             Text("Register Mood")
                         }
@@ -95,8 +105,23 @@ struct DailyLoggerView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
+    private func logMood() {
+        let newRegister = MoodRegister(
+            currentMood: selectedMood,
+            comment: comment
+        )
+
+        context.insert(newRegister)
+
+        comment = ""
+        hasSelectedMood = false
+        withAnimation(.bouncy) {
+            isModalOpened = false
+        }
+    }
 }
 
 #Preview {
     DailyLoggerView()
+        .modelContainer(for: MoodRegister.self, inMemory: true)
 }

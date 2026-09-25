@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct RootView: View {
     var body: some View {
@@ -15,7 +16,7 @@ struct RootView: View {
             }
             
             Tab("Logs", systemImage: "clock.fill") {
-                Text("Registered Logs")
+                UserLogsView()
             }
         }
     }
@@ -23,4 +24,5 @@ struct RootView: View {
 
 #Preview {
     RootView()
+        .modelContainer(for: MoodRegister.self, inMemory: true)
 }

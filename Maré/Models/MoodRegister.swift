@@ -13,14 +13,18 @@ class MoodRegister {
     @Attribute(.unique) var id: UUID
     var currentMood: MoodEnum
     var comment: String
-    var tags: [String]
     var date: Date
     
-    init(id: UUID = UUID(), currentMood: MoodEnum, comment: String = "", tags: [String] = [], date: Date = .now) {
+    init(id: UUID = UUID(), currentMood: MoodEnum, comment: String = "", date: Date = .now) {
         self.id = id
         self.currentMood = currentMood
         self.comment = comment
-        self.tags = tags
         self.date = date
+    }
+}
+
+extension MoodRegister {
+    var displayComment: String {
+        comment.isEmpty ? "No Comment." : comment
     }
 }
