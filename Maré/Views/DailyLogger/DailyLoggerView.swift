@@ -12,69 +12,89 @@ struct DailyLoggerView: View {
     @State private var selectedMood: MoodEnum = .allCases.randomElement()!
     @State private var hasSelectedMood = false
     @State private var comment: String = ""
+    @State private var isModalOpened: Bool = false
     
     let moods: [MoodEnum] = MoodEnum.allCases
-
+    
     var body: some View {
-        VStack(spacing: 25) {
-            Text("How are you feeling today?")
-            Picker("Mood Picker", selection: $selectedMood) {
-                ForEach(moods) { mood in
-                    HStack {
-                        Text("\(mood.rawValue)")
-                            .multilineTextAlignment(.center)
-                            .tag(mood)
-
-                        Spacer()
-
-                        Text("\(mood.emoji)")
+        ZStack {
+            if !isModalOpened {
+                Button("How are you feeling today?") {
+                    withAnimation(.bouncy) {
+                        isModalOpened = true
                     }
                 }
-            }
-            .pickerStyle(.wheel)
-            .frame(maxWidth: 250, maxHeight: 180)
-            .onChange(of: selectedMood) {
-                withAnimation {
-                    hasSelectedMood = true
-                }
-            }
-            
-            VStack(spacing: 5) {
-                ZStack(alignment: .topLeading) {
-                    if comment.isEmpty {
-                        Text(selectedMood.commentPlaceholder)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 8)
-                    }
-                    
-                    TextEditor(text: $comment)
-                        .multilineTextAlignment(.leading)
-                        .scrollContentBackground(.hidden)
-                }
-                .padding()
-                .frame(width: 300, height: 150)
-                .glassEffect(.regular, in: .rect(cornerRadius: 20))
-                .opacity(hasSelectedMood ? 1 : 0)
-                .disabled(!hasSelectedMood)
-                
-                Text(hasSelectedMood ? "Want to comment about?" : " ")
-                    .foregroundStyle(.foreground)
-                    .italic()
-            }
-            
-            Button {
-                // Register Mood
-            } label: {
-                Text(hasSelectedMood ? "Register Mood" : " ")
-            }
-            .buttonStyle(.glassProminent)
-            .tint(selectedMood.color)
-            .opacity(hasSelectedMood ? 1 : 0)
+                .buttonStyle(.glassProminent)
+                .tint(.blue)
+                .transition(.scale.combined(with: .opacity))
+            } else {
+                VStack(spacing: 25) {
+                    Text("How are you feeling today?")
+                        .font(.largeTitle.bold())
 
+                    Text("Pick a mood")
+                        .font(.title3)
+                        .foregroundStyle(.secondary)
+
+                    Picker("Mood Picker", selection: $selectedMood) {
+                        ForEach(moods) { mood in
+                            HStack {
+                                Text(mood.rawValue)
+                                    .multilineTextAlignment(.center)
+                                    .tag(mood)
+
+                                Text(mood.emoji)
+                            }
+                        }
+                    }
+                    .pickerStyle(.wheel)
+                    .frame(maxWidth: 280, maxHeight: 180)
+                    .onChange(of: selectedMood) {
+                        withAnimation {
+                            hasSelectedMood = true
+                        }
+                    }
+
+                    if hasSelectedMood {
+                        VStack(spacing: 5) {
+                            ZStack(alignment: .topLeading) {
+                                if comment.isEmpty {
+                                    Text(selectedMood.commentPlaceholder)
+                                        .foregroundStyle(.secondary)
+                                        .multilineTextAlignment(.center)
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 8)
+                                }
+
+                                TextEditor(text: $comment)
+                                    .multilineTextAlignment(.leading)
+                                    .scrollContentBackground(.hidden)
+                            }
+                            .padding()
+                            .frame(width: 280, height: 150)
+                            .glassEffect(.regular, in: .rect(cornerRadius: 20))
+
+                            Text("Want to comment about?")
+                                .foregroundStyle(.foreground)
+                                .italic()
+                        }
+
+                        Button {
+                            // Register Mood
+                        } label: {
+                            Text("Register Mood")
+                        }
+                        .buttonStyle(.glassProminent)
+                        .tint(selectedMood.color)
+                        .transition(.scale)
+                    }
+                }
+                .transition(.opacity.combined(with: .scale))
+            }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
+
 }
 
 #Preview {
