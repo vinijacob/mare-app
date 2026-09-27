@@ -14,6 +14,6 @@ struct Mare_App: App {
         WindowGroup {
             RootView()
         }
-        .modelContainer(for: MoodRegister.self)
+        .modelContainer(for: Mood.self)
     }
 }

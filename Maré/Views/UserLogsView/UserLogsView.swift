@@ -9,7 +9,7 @@ import SwiftData
 import SwiftUI
 
 struct UserLogsView: View {
-    @Query private var userLogs: [MoodRegister]
+    @Query private var userLogs: [Mood]
 
     var body: some View {
         VStack {
@@ -44,5 +44,5 @@ struct UserLogsView: View {
 
 #Preview {
     UserLogsView()
-        .modelContainer(for: MoodRegister.self, inMemory: true)
+        .modelContainer(for: Mood.self, inMemory: true)
 }

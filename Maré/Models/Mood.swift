@@ -1,5 +1,5 @@
 //
-//  MoodRegister.swift
+//  Mood.swift
 //  Maré
 //
 //  Created by Vinicius Ramos Jacob on 23/09/26.
@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class MoodRegister {
+class Mood {
     @Attribute(.unique) var id: UUID
     var currentMood: MoodEnum
     var comment: String
@@ -23,7 +23,7 @@ class MoodRegister {
     }
 }
 
-extension MoodRegister {
+extension Mood {
     var displayComment: String {
         comment.isEmpty ? "No Comment." : comment
     }

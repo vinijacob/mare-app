@@ -16,7 +16,7 @@ struct DailyLoggerView: View {
 
     @Environment(\.modelContext) private var context
 
-    @Query private var registers: [MoodRegister]
+    @Query private var registers: [Mood]
 
     private var hasRegisteredToday: Bool {
         registers.contains { register in
@@ -106,7 +106,7 @@ struct DailyLoggerView: View {
     }
 
     private func logMood() {
-        let newRegister = MoodRegister(
+        let newRegister = Mood(
             currentMood: selectedMood,
             comment: comment
         )
@@ -123,5 +123,5 @@ struct DailyLoggerView: View {
 
 #Preview {
     DailyLoggerView()
-        .modelContainer(for: MoodRegister.self, inMemory: true)
+        .modelContainer(for: Mood.self, inMemory: true)
 }

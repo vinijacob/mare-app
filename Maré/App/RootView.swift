@@ -24,5 +24,5 @@ struct RootView: View {
 
 #Preview {
     RootView()
-        .modelContainer(for: MoodRegister.self, inMemory: true)
+        .modelContainer(for: Mood.self, inMemory: true)
 }
