@@ -9,35 +9,60 @@ import SwiftData
 import SwiftUI
 
 struct UserLogsView: View {
-    @Query private var userLogs: [Mood]
+    @Query(sort: \Mood.date) private var userLogs: [Mood]
+    @Environment(\.modelContext) private var context
+
+    @State private var newLog: Mood?
 
     var body: some View {
-        VStack {
-            Text("User Logs")
-                .font(.largeTitle.bold())
+        NavigationSplitView {
+            Group {
+                if !userLogs.isEmpty {
+                    List {
+                        ForEach(userLogs) { userLog in
+                            NavigationLink {
+                                UserLogsDetail(userLog: userLog)
+                            } label: {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text("\(userLog.currentMood.emoji) — \(userLog.currentMood.rawValue)")
+                                        .font(.headline)
 
-            // split via dates
-            List {
-                ForEach(userLogs) { userLog in
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text("\(userLog.currentMood.emoji) — \(userLog.currentMood.rawValue)")
-                                .bold()
-                            HStack {
-                                Text(userLog.displayComment)
-                                    .font(.caption)
+                                    HStack {
+                                        Text(userLog.displayComment)
+                                            .lineLimit(1)
+
+                                        Spacer()
+
+                                        Text(userLog.date.formatted(.dateTime.day().month(.abbreviated)))
+                                    }
+                                    .font(.subheadline)
                                     .foregroundStyle(.secondary)
-                                
-                                Spacer()
-                                
-                                Text(userLog.date.formatted(.dateTime.day().month(.twoDigits).year().hour().minute()))
-                                    .font(.caption2)
-                                    .foregroundStyle(.secondary)
+                                }
                             }
                         }
+                        .onDelete(perform: deleteLog(indexes:))
                     }
+                } else {
+                    ContentUnavailableView(
+                        "No logs",
+                        systemImage: "waveform.path.ecg"
+                    )
                 }
             }
+            .navigationTitle("User Logs")
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    EditButton()
+                }
+            }
+        } detail: {
+            Text("Select a log")
+        }
+    }
+
+    private func deleteLog(indexes: IndexSet) {
+        for index in indexes {
+            context.delete(userLogs[index])
         }
     }
 }
