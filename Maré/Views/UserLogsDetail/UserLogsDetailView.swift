@@ -46,6 +46,8 @@ struct UserLogsDetail: View {
                 LabeledContent("Time", value: userLog.date.formatted(date: .omitted, time: .shortened))
             }
         }
+        .scrollContentBackground(.hidden)
+        .background { OceanBackground() }
         .navigationTitle(isNew ? "New Record" : "Record")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

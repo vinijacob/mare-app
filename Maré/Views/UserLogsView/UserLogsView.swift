@@ -42,6 +42,7 @@ struct UserLogsView: View {
                         }
                         .onDelete(perform: deleteLog(indexes:))
                     }
+                    .scrollContentBackground(.hidden)
                 } else {
                     ContentUnavailableView(
                         "No logs",
@@ -49,6 +50,7 @@ struct UserLogsView: View {
                     )
                 }
             }
+            .background { OceanBackground(showsCelestialBody: false) }
             .navigationTitle("User Logs")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -56,7 +58,13 @@ struct UserLogsView: View {
                 }
             }
         } detail: {
-            Text("Select a log")
+            // Visible beside the list when the iPhone Duo is unfolded.
+            ContentUnavailableView(
+                "Select a log",
+                systemImage: "water.waves",
+                description: Text("Pick an entry to see how the tide was that day.")
+            )
+            .background { OceanBackground() }
         }
     }
 

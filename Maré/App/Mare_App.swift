@@ -10,9 +10,12 @@ import SwiftData
 
 @main
 struct Mare_App: App {
+    @AppStorage(UserProfile.appearanceKey) private var appearance: AppAppearance = .system
+
     var body: some Scene {
         WindowGroup {
             RootView()
+                .preferredColorScheme(appearance.colorScheme)
         }
         .modelContainer(for: Mood.self)
     }
